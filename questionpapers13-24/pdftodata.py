@@ -1,20 +1,26 @@
-import PyPDF2
-import re
+def quick_sort(array, start, end):
+    if end <= start:
+        return  # Base case
+    
+    pivot = partition(array, start, end)
+    quick_sort(array, start, pivot - 1)
+    quick_sort(array, pivot + 1, end)
 
-def extract_text_from_pdf(pdf_path):
-    with open(pdf_path, 'rb') as file:
-        reader = PyPDF2.PdfReader(file)
-        text = ''
-        for page in range(len(reader.pages)):
-            
-            text += reader.pages[page].extract_text()
-    return text
-def get_sentences_starting_with_numbers(text):
-    # Regex pattern to match sentences starting with numbers
-    pattern = r'\b\d[\d\s,]*[.!?]'  # This matches a number at the beginning of the sentence, followed by any number of digits or spaces, ending with punctuation.
-    sentences = re.findall(pattern, text)
-    return sentences
+def partition(array, start, end):
+    pivot = array[end]
+    i = start - 1
+    
+    for j in range(start, end):
+        if array[j] < pivot:
+            i += 1
+            array[i], array[j] = array[j], array[i]
+    
+    i += 1
+    array[i], array[end] = array[end], array[i]
+    
+    return i
+array = [2, 8, 5, 3, 9, 4, 7, 6, 1]
 
-pdf_text = extract_text_from_pdf(r'C:\Users\LENOVO\Documents\PROJECTS\question paper prediction\question-paper-prediction-\questionpapers13-24\mergedpdf.pdf')
-print(pdf_text)
-print(get_sentences_starting_with_numbers(pdf_text))
+quick_sort(array, 0, len(array) - 1)    
+for i in array:
+        print(i, end=" ")
